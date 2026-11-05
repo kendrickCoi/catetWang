@@ -18,10 +18,12 @@ Untuk membuka dari iPhone di jaringan Wi-Fi yang sama, sajikan project dengan al
 ## Fitur
 
 - Dashboard saldo total dan saldo per rekening.
+- Pengaturan saldo awal Mandiri dan BCA beserta tanggal mulai saldo dihitung.
 - Catatan pemasukan transfer dan pengeluaran melalui transfer, QRIS, virtual account, atau tarik tunai.
 - Laporan bulanan, ringkasan per bank, dan rincian metode pembayaran.
 - Pencarian dan filter transaksi.
 - Penyimpanan transaksi di local storage browser dan dukungan PWA.
+- Ukuran kontrol input pada ponsel disetel agar Safari iOS tidak memperbesar halaman saat field difokuskan.
 
 ## Batasan penyimpanan
 
