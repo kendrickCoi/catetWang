@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#f6f7f4" />
+  <meta name="description" content="Catatan keuangan pribadi untuk Mandiri dan BCA." />
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="apple-touch-icon" href="icon.svg" />
+  <link rel="stylesheet" href="styles.css" />
+  <title>Arus — Catatan Keuangan</title>
+</head>
+<body>
+  <div id="login" class="login-screen">
+    <div class="login-card">
+      <div class="brand-mark">a<span>•</span></div>
+      <p class="eyebrow">CATATAN KEUANGAN PRIBADI</p>
+      <h1>Uangmu, lebih<br />terkendali.</h1>
+      <p class="muted">Masuk untuk melihat arus keuanganmu.</p>
+      <form id="login-form">
+        <label>Username<input id="username" autocomplete="username" value="admin" required /></label>
+        <label>Password<input id="password" type="password" autocomplete="current-password" placeholder="Masukkan password" required /></label>
+        <p id="login-error" class="error" aria-live="polite"></p>
+        <button class="primary wide" type="submit">Masuk <span>→</span></button>
+      </form>
+      <p class="login-foot">Data tersimpan di perangkat ini.</p>
+    </div>
+  </div>
+
+  <div id="app" class="app-shell hidden">
+    <aside class="sidebar">
+      <a class="brand" href="#"><span class="brand-mark small">a<span>•</span></span><span>arus<span class="brand-dot">.</span></span></a>
+      <div class="side-label">MENU</div>
+      <button class="nav-item active" data-view="dashboard"><span>▦</span> Ringkasan</button>
+      <button class="nav-item" data-view="transactions"><span>↕</span> Transaksi</button>
+      <button class="nav-item" data-view="reports"><span>▤</span> Laporan</button>
+      <div class="sidebar-bottom"><div class="profile"><div class="avatar">A</div><div><b>Admin</b><small>Keuangan pribadi</small></div><button id="logout" class="icon-button" title="Keluar">↪</button></div></div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar"><div><p class="eyebrow" id="today-label">KEUANGAN PRIBADI</p><h1 id="page-title">Ringkasan</h1></div><div class="top-actions"><span class="today-chip" id="today-chip"></span><button class="primary add-top" id="add-top">＋ <span>Catat transaksi</span></button></div></header>
+      <section id="dashboard-view" class="view">
+        <div class="welcome-row"><div><h2>Halo, Admin <span>✳</span></h2><p>Berikut gambaran keuanganmu bulan ini.</p></div><button class="month-select" id="month-current"></button></div>
+        <div class="summary-grid">
+          <article class="summary-card balance-card"><div class="card-head"><span>Total saldo</span><span class="card-icon mint">◈</span></div><strong id="total-balance">Rp0</strong><div class="balance-accounts"><span><i class="dot mandiri"></i> Mandiri <b id="mandiri-balance">Rp0</b></span><span><i class="dot bca"></i> BCA <b id="bca-balance">Rp0</b></span></div></article>
+          <article class="summary-card"><div class="card-head"><span>Pemasukan bulan ini</span><span class="card-icon green">↙</span></div><strong id="month-income">Rp0</strong><p class="card-caption"><span class="trend up">↗</span> Uang masuk bulan ini</p></article>
+          <article class="summary-card"><div class="card-head"><span>Pengeluaran bulan ini</span><span class="card-icon coral">↗</span></div><strong id="month-expense">Rp0</strong><p class="card-caption"><span class="trend down">↗</span> Uang keluar bulan ini</p></article>
+          <article class="summary-card"><div class="card-head"><span>Sisa arus kas</span><span class="card-icon lavender">⌁</span></div><strong id="month-net">Rp0</strong><p class="card-caption">Pemasukan dikurangi pengeluaran</p></article>
+        </div>
+        <div class="dashboard-grid">
+          <article class="panel flow-panel"><div class="panel-head"><div><h3>Arus kas</h3><p>Pemasukan dan pengeluaran per hari</p></div><span class="legend"><i class="dot income"></i> Masuk <i class="dot expense"></i> Keluar</span></div><div id="flow-chart" class="chart"></div></article>
+          <article class="panel account-panel"><div class="panel-head"><div><h3>Rekening</h3><p>Saldo di setiap bank</p></div><span class="dots">•••</span></div><div class="account-row"><span class="bank-logo logo-mandiri">M</span><div class="account-info"><b>Mandiri</b><small>Rekening utama</small></div><strong id="mandiri-card-balance">Rp0</strong></div><div class="account-row"><span class="bank-logo logo-bca">B</span><div class="account-info"><b>BCA</b><small>Rekening kedua</small></div><strong id="bca-card-balance">Rp0</strong></div><button class="text-button" data-go="transactions">Lihat semua transaksi <span>→</span></button></article>
+        </div>
+        <article class="panel recent-panel"><div class="panel-head"><div><h3>Transaksi terbaru</h3><p>Aktivitas keuanganmu</p></div><button class="text-button" data-go="transactions">Lihat semua <span>→</span></button></div><div id="recent-list"></div></article>
+      </section>
+
+      <section id="transactions-view" class="view hidden"><div class="section-intro"><div><h2>Semua transaksi</h2><p>Catat dan telusuri uang masuk dan keluar.</p></div><button class="primary" id="add-transactions">＋ Catat transaksi</button></div><div class="panel transaction-panel"><div class="filters"><div class="search-box">⌕ <input id="search" placeholder="Cari transaksi..." /></div><select id="type-filter"><option value="all">Semua jenis</option><option value="income">Pemasukan</option><option value="expense">Pengeluaran</option></select><select id="bank-filter"><option value="all">Semua rekening</option><option value="Mandiri">Mandiri</option><option value="BCA">BCA</option></select><input id="month-filter" type="month" /></div><div id="transaction-list"></div></div></section>
+
+      <section id="reports-view" class="view hidden"><div class="section-intro"><div><h2>Laporan bulanan</h2><p>Pahami kebiasaan keuanganmu dari bulan ke bulan.</p></div><input id="report-month" class="month-input" type="month" /></div><div class="summary-grid report-summary"><article class="summary-card"><div class="card-head"><span>Total pemasukan</span><span class="card-icon green">↙</span></div><strong id="report-income">Rp0</strong></article><article class="summary-card"><div class="card-head"><span>Total pengeluaran</span><span class="card-icon coral">↗</span></div><strong id="report-expense">Rp0</strong></article><article class="summary-card"><div class="card-head"><span>Selisih</span><span class="card-icon lavender">⌁</span></div><strong id="report-net">Rp0</strong></article></div><div class="dashboard-grid report-grid"><article class="panel"><div class="panel-head"><div><h3>Ringkasan rekening</h3><p>Arus masuk dan keluar per bank</p></div></div><div id="report-banks"></div></article><article class="panel"><div class="panel-head"><div><h3>Metode pengeluaran</h3><p>Rincian transaksi keluar</p></div></div><div id="report-methods"></div></article></div><article class="panel report-transactions"><div class="panel-head"><div><h3>Aktivitas bulan ini</h3><p>Daftar transaksi sesuai periode laporan</p></div></div><div id="report-list"></div></article></section>
+    </main>
+    <nav class="mobile-nav"><button class="active" data-view="dashboard"><span>▦</span>Ringkasan</button><button data-view="transactions"><span>↕</span>Transaksi</button><button data-view="reports"><span>▤</span>Laporan</button></nav>
+  </div>
+
+  <dialog id="transaction-dialog"><form id="transaction-form" method="dialog"><div class="dialog-head"><div><p class="eyebrow">TRANSAKSI BARU</p><h2>Catat uangmu</h2></div><button type="button" class="icon-button close-dialog" aria-label="Tutup">×</button></div><div class="type-switch"><button type="button" class="type-option selected" data-type="expense">− Pengeluaran</button><button type="button" class="type-option" data-type="income">＋ Pemasukan</button></div><input type="hidden" id="entry-type" value="expense" /><label class="amount-label">Nominal<div class="amount-input"><span>Rp</span><input id="amount" inputmode="numeric" placeholder="0" required /></div></label><label>Nama transaksi<input id="description" placeholder="Contoh: Makan siang" required maxlength="60" /></label><div class="form-row"><label>Rekening<select id="account" required><option value="Mandiri">Mandiri</option><option value="BCA">BCA</option></select></label><label>Tanggal<input id="date" type="date" required /></label></div><label id="method-label">Metode pembayaran<select id="method"><option>Transfer</option><option>QRIS</option><option>Virtual account</option><option>Tarik tunai</option></select></label><label>Catatan <span class="optional">(opsional)</span><input id="note" placeholder="Tambahkan catatan" maxlength="120" /></label><p id="form-error" class="error" aria-live="polite"></p><div class="dialog-actions"><button type="button" class="secondary close-dialog">Batal</button><button class="primary" type="submit">Simpan transaksi</button></div></form></dialog>
+  <script src="app.js"></script>
+</body>
+</html>
